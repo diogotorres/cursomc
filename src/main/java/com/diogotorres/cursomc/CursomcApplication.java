@@ -3,31 +3,15 @@ package com.diogotorres.cursomc;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import com.diogotorres.cursomc.domain.*;
+import com.diogotorres.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.diogotorres.cursomc.domain.Categoria;
-import com.diogotorres.cursomc.domain.Cidade;
-import com.diogotorres.cursomc.domain.Cliente;
-import com.diogotorres.cursomc.domain.Endereco;
-import com.diogotorres.cursomc.domain.Estado;
-import com.diogotorres.cursomc.domain.Pagamento;
-import com.diogotorres.cursomc.domain.PagamentoComBoleto;
-import com.diogotorres.cursomc.domain.PagamentoComCartao;
-import com.diogotorres.cursomc.domain.Pedido;
-import com.diogotorres.cursomc.domain.Produto;
 import com.diogotorres.cursomc.domain.enums.EstadoPagamento;
 import com.diogotorres.cursomc.domain.enums.TipoCliente;
-import com.diogotorres.cursomc.repositories.CategoriaRepository;
-import com.diogotorres.cursomc.repositories.CidadeRepository;
-import com.diogotorres.cursomc.repositories.ClienteRepository;
-import com.diogotorres.cursomc.repositories.EnderecoRepository;
-import com.diogotorres.cursomc.repositories.EstadoRepository;
-import com.diogotorres.cursomc.repositories.PagamentoRepository;
-import com.diogotorres.cursomc.repositories.PedidoRepository;
-import com.diogotorres.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class CursomcApplication implements CommandLineRunner {
@@ -52,6 +36,9 @@ public class CursomcApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
@@ -118,7 +105,19 @@ public class CursomcApplication implements CommandLineRunner {
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
-		
+
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1,800.00);
+
+		ped1.getItems().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItems().add(ip3);
+
+		p1.getItems().add(ip1);
+		p2.getItems().add(ip3);
+		p3.getItems().add(ip2);
+
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 	
 }
