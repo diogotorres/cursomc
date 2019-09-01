@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.diogotorres.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // joined = cria uma tabela para cada herança. single table = gera uma unica tabela com todos os campos das heranças
@@ -20,7 +21,8 @@ public abstract class Pagamento  implements Serializable { //abstract garante qu
 	@Id	
 	private Integer id;
 	private Integer estado;
-	
+
+	@JsonBackReference
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId //faz o id da classe pagamento ser o mesmo da classe pedido, ja que a relação é um para um
