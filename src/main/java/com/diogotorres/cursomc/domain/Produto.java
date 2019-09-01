@@ -21,7 +21,7 @@ public class Produto implements Serializable {
 	private String nome;
 	private Double preco;
 
-	@JsonBackReference //omite este lado da lista
+	@JsonIgnore //omite este lado da lista
 	@ManyToMany
 	@JoinTable(
 		name = "PRODUTO_CATEGORIA",
